@@ -1,11 +1,25 @@
-function handleClick(response) {
-  alert(response.data.answer);
+function showAnswer(response) {
+  let jokeElement = document.querySelector("#joke");
+  new Typewriter("#joke", {
+    strings: response.data.answer,
+    autoStart: true,
+    cursor: "",
+    delay: 40,
+  });
 }
-let apiKey = "09te212a1c952dfb01916b44eoad6c23";
-let context =
-  "You are an intelligent AI Assistant, who provides clear and concise answers. Provide only one sentance";
-let prompt = "Who was the first female president?";
-let apiUrl = `https://api.shecodes.io/ai/v1/generate?prompt=${prompt}&context=${context}&key=${apiKey}`;
-let buttonElement = document.querySelector("#special-button");
-buttonElement.addEventListener("click", handleClick);
-axios.get(apiUrl).then(handleClick);
+
+function generateJoke(event) {
+  event.preventDefault();
+  let apiKey = "09te212a1c952dfb01916b44eoad6c23";
+  let context =
+    "you are an intelligent AI Assistant, who provides funny jokes about cheese";
+  let prompt = "tell me a joke about cheese";
+  let apiUrl = `https://api.shecodes.io/ai/v1/generate?prompt=${prompt}&context=${context}&key=${apiKey}`;
+
+  let jokeElement = document.querySelector("#joke");
+  jokeElement.innerHTML = "Generating a joke for you...";
+  axios.get(apiUrl).then(showAnswer);
+}
+
+let jokeButton = document.querySelector("#joke-button");
+jokeButton.addEventListener("click", generateJoke);
